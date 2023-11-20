@@ -1,4 +1,3 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
@@ -28,23 +27,56 @@ int readNaturalNumberLessThan100() {
     return number;
 }
 
-double readRealNumber() {
+void readRealNumber(bool a, double list[100], int size) {
     double number;
     bool validInput = false;
 
+    // a = 0 заполнен по убыванию
+    // a = 1 заполнен по возрасланию
+
     while (!validInput) {
         printf("Enter a real number: ");
+
         if (scanf("%lf", &number) == 1) {
             validInput = true;
-        }
-        else {
+        } else {
             printf("Incorrect input.\n");
             // Очистка буфера после некорректного ввода
             while (getchar() != '\n');
         }
     }
 
-    return number;
+    list[0] = number;
+
+    for (int i = 1; i < size; i += 1) {
+
+        validInput = false;
+
+        while (!validInput) {
+            printf("Enter a real number: ");
+
+            if (scanf("%lf", &number) == 1){
+                if (a == 0 && list[i - 1] >= number) {
+                    validInput = true;
+                } else if (a == 1 && list[i - 1] <= number) {
+                    validInput = true;
+                } else {
+                    printf("Incorrect input.\n");
+                    // Очистка буфера после некорректного ввода
+                    while (getchar() != '\n');
+                    continue;
+                }
+            } else {
+                printf("Incorrect input.\n");
+                // Очистка буфера после некорректного ввода
+                while (getchar() != '\n');
+            }
+        }
+
+        list[i] = number;
+
+    }
+
 }
 
 
@@ -52,22 +84,19 @@ int main()
 {
     double list1[100];
     double list2[100];
-    
+
     int size1 = readNaturalNumberLessThan100();
     int size2 = readNaturalNumberLessThan100();
 
-        for (int i = 0; i < size1; i++) {
-            list1[i] = readRealNumber();
-        }
+    int t1, t2;
 
-        printf("end of first array\n");
+    readRealNumber(0, list1, size1);
+    printf("end of first array\n");
+    readRealNumber(1, list2, size2);
 
-        for (int i = 0; i < size2; i++) {
-            list2[i] = readRealNumber();
-        }
 
     int i, j;
-    for (i = 0, j = size2 - 1; i < size1 || j > -1;) {
+    for (i = 0, j = size2 - 1; -1 < i && i < size1 && -1 < j && j < size2;) {
         if ((int)list1[i] > (int)list2[j]){
             printf("%i ", (int)list1[i]);
             i += 1;
@@ -77,6 +106,16 @@ int main()
             j -= 1;
         }
     }
+
+
+    for (;i < size1; i += 1) {
+        printf("%i ", (int)list1[i]);
+    }
+
+    for (;j > -1; j -= 1) {
+        printf("%i ", (int)list2[j]);
+    }
+
 
     return 0;
 }
