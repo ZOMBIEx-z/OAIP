@@ -1,85 +1,72 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <ctype.h>
 
-int readNaturalNumberLessThan100() {
-    int number;
-    bool validInput = false;
+int main() {
 
-    while (!validInput) {
-        printf("Enter a natural number less than 100: ");
-        if (scanf("%d", &number) == 1) {
-            if (number > 0 && number < 100) {
-                validInput = true;
+    int size;
+
+    printf("size of array: ");
+    scanf("%d", &size);
+
+    int **array = (int **) malloc(size * sizeof(int *));
+
+    int k;
+
+    for (int i = 0; i < size; i += 1) {
+        int j = 0;
+        while (true) {
+
+            array[i] = (int *) realloc(array[i], (j + 1) * sizeof(int));
+            printf("Enter the value of array[%d][%d]: ", i, j);
+            scanf("%d", &k);
+
+            array[i][j] = k;
+            j += 1;
+            if (k == 100) {
+                break;
             }
-            else {
-                printf("Invalid value. Enter the number again.\n");
+
+        }
+    }
+
+    for (int i = 0; i < size; i += 1) {
+        int j = 0;
+        int p;
+        for (p = 0; array[i][p] != 100; p += 1);
+        p += 1;
+        while (array[i][j] != 100) {
+
+            if (array[i][j] < 0) {
+                for (int k = j; k < p - 1; k += 1) {
+                    array[i][k] = array[i][k + 1];
+                }
+                p -= 1;
+                array[i] = (int *) realloc(array[i], p * sizeof(int));
+                j -= 1;
             }
-        }
-        else {
-            printf("Incorrect input. Enter the number again.\n");
-            // Очистка буфера после некорректного ввода
-            while (getchar() != '\n');
+
+            j +=1;
         }
     }
 
-    return number;
-}
+    for (int i = 0; i < size; i += 1) {
+        for (int j = 0; array[i][j] != 100; j += 1) {
 
-double readRealNumber() {
-    double number;
-    bool validInput = false;
+            printf("%d ", array[i][j]);
 
-    while (!validInput) {
-        printf("Enter a real number: ");
-        if (scanf("%lf", &number) == 1) {
-            validInput = true;
+
         }
-        else {
-            printf("Incorrect input. Enter the number again.\n");
-            // Очистка буфера после некорректного ввода
-            while (getchar() != '\n');
-        }
+        printf("100\n");
     }
 
-    return number;
-}
-
-
-int main()
-{
-    double list1[100];
-    char line;
-    printf("How do you want to fill array (r-random, other-from keyboard): ");
-    line = getchar();
-    int size = readNaturalNumberLessThan100();
-
-    if (line == 'r') {
-        for (int i = 0; i < size; i++) {
-            list1[i] = rand();
-        }
-    }
-    else {
-        for (int i = 0; i < size; i++) {
-            list1[i] = readRealNumber();
-        }
+    for (int i = 0; i < size; i += 1) {
+        free(array[i]);
     }
 
 
-    int index_last_even = -1;
-    for (int i = size - 1; i > -1; i -= 1) {
-        if ((int)list1[i] % 2 == 0) {
-            index_last_even = i;
-            break;
-        }
-    }
-
-    for (int i = 0; i < index_last_even+1; i += 1) {
-        printf("%i ",(int)list1[i]);
-    }
-
+    free(array);
 
     return 0;
 }
+

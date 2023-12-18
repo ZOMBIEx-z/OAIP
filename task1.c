@@ -1,154 +1,39 @@
-﻿#define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
-#include <stdbool.h>
-#include <ctype.h>
-#include <string.h>
 
+int main() {
 
-bool isNumber(const char* str) {
-    int i = 0;
+    int size;
 
-    // Учет знака числа
-    if (str[0] == '-' || str[0] == '+') {
-        i = 1;
+    printf("size of array: ");
+    scanf("%d", &size);
+
+    int *array = (int *) malloc(size * sizeof(int));
+
+    for (int i = 0; i < size; i += 1) {
+        printf("Enter the value of array[%d]: ", i);
+        scanf("%d", &array[i]);
     }
 
-    // Проверка каждого символа на цифру
-    for (; i < strlen(str); i++) {
-        if (str[i] < '0' || str[i] > '9') {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-int readNaturalNumberLessThan100() {
-    char input[100];
-
-    while (true) {
-        printf("Enter a number: ");
-        fgets(input, sizeof(input), stdin);
-
-        // Удаление символа новой строки из ввода
-        if (input[strlen(input) - 1] == '\n') {
-            input[strlen(input) - 1] = '\0';
-        }
-
-        if (isNumber(input) && atoi(input) <= 100) {
-            return atoi(input);
-        }
-        else {
-            printf("You entered the wrong number. Try again.\n");
-        }
-    }
-}
-
-bool isFloat(const char* str) {
-    int i = 0;
-
-    // Учет знака числа
-    if (str[0] == '-' || str[0] == '+') {
-        i = 1;
-    }
-
-    bool hasDot = false;
-
-    // Проверка каждого символа на цифру или точку
-    for (; i < strlen(str); i++) {
-        if (str[i] == '.') {
-            // Проверка наличия только одной точки
-            if (hasDot) {
-                return false;
+    for (int i = 0; i < size; i += 1) {
+        for (int j = i + 1; j < size; j += 1) {
+            if (array[i] == array[j]) {
+                for (int k = j; k < size; k += 1) {
+                    array[k] = array[k + 1];
+                }
+                size -= 1;
+                int *array = (int *) realloc(array, size * sizeof(int));
+                j -= 1;
             }
-            hasDot = true;
-        }
-        else if (str[i] < '0' || str[i] > '9') {
-            return false;
         }
     }
-
-    return true;
-}
-
-double readRealNumber() {
-    char input[100];
-
-    while (true) {
-        printf("Enter a fractional number: ");
-        fgets(input, sizeof(input), stdin);
-
-        // Удаление символа новой строки из ввода
-        if (input[strlen(input) - 1] == '\n') {
-            input[strlen(input) - 1] = '\0';
-        }
-
-        if (isFloat(input)) {
-            return atof(input);
-        }
-        else {
-            printf("You entered an incorrect fractional number. Try again.\n");
-        }
-    }
-}
-
-int main()
-{
-    
-    double list1[100];
-    char line[100];
-    printf("How do you want to fill array (r-random, other-from keyboard): ");
-    fgets(line, sizeof(line), stdin);
-
-    int size = readNaturalNumberLessThan100();
-
-    
-
-    if (line[0] == 'r') {
-        for (int i = 0; i < size; i++) {
-            list1[i] = rand();
-        }
-    }
-    else {
-        for (int i = 0; i < size; i++) {
-            list1[i] = readRealNumber();
-        }
-    }
-
-    double min = list1[0];
-    for (int i = 0; i < size; i += 1) {
-        if (min > list1[i]) {
-            min = list1[i];
-        }
-    }
-
-    printf("min = %lf\n", min);
-
-    int index1, index2;
 
     for (int i = 0; i < size; i += 1) {
-        if (list1[i] > 0) {
-            index1 = i;
-            break;
-        }
-    }
-    for (int i = size - 1; i > -1; i -= 1) {
-        if (list1[i] > 0) {
-            index2 = i;
-            break;
-        }
+        printf("%d ", array[i]);
     }
 
-    if (index1 == index2 || index2 - index1 == 1) {
-        printf("the sum");
-    }
-    else {
-        double sum = 0;
-        for (int i = index1 + 1; i < index2; i += 1) {
-            sum += list1[i];
-        }
-        printf("the sum is %lf", sum);
-    }   
+    free(array);
+
     return 0;
 }
+
