@@ -84,7 +84,6 @@ loop_end:
         free(array[i]);
     }
 
-
     free(array);
 
     return 0;
