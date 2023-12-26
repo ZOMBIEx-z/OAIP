@@ -2,6 +2,23 @@
 #include <stdlib.h>
 #include <stdbool.h>
 
+void shift(int *array, int k) {
+    int size;
+    for (size = 0; array[size] != 0; size += 1);
+
+    int *temp = (int *) malloc(size * sizeof(int));
+
+    for (int i = 0; i < size; i += 1) {
+        temp[(i + k) % size] = array[i];
+    }
+
+    for (int i = 0; i < size; i += 1) {
+        array[i] = temp[i];
+    }
+
+    free(temp);
+}
+
 int main() {
 
     int size;
@@ -23,41 +40,44 @@ int main() {
 
             array[i][j] = k;
             j += 1;
-            if (k == 100) {
+            if (k == 0) {
                 break;
             }
 
         }
     }
+    printf("How many positions to the left should the elements of each line be shifted? 3");
+    scanf("%d", &k);
+
 
     for (int i = 0; i < size; i += 1) {
-        int j = 0;
-        int p;
-        for (p = 0; array[i][p] != 100; p += 1);
-        p += 1;
-        while (array[i][j] != 100) {
+        shift(array[i], k);
+    }
+/*
+    int i = 0;
 
-            if (array[i][j] < 0) {
-                for (int k = j; k < p - 1; k += 1) {
-                    array[i][k] = array[i][k + 1];
-                }
-                p -= 1;
-                array[i] = (int *) realloc(array[i], p * sizeof(int));
-                j -= 1;
-            }
-
-            j +=1;
-        }
+loop_begin:
+    if (i >= size) {
+        goto loop_end;
     }
 
+    shift(array[i], k);
+
+    i += 1;
+
+    goto loop_begin;
+
+loop_end:
+*/
+
     for (int i = 0; i < size; i += 1) {
-        for (int j = 0; array[i][j] != 100; j += 1) {
+        for (int j = 0; array[i][j] != 0; j += 1) {
 
             printf("%d ", array[i][j]);
 
 
         }
-        printf("100\n");
+        printf("\n");
     }
 
     for (int i = 0; i < size; i += 1) {
@@ -69,4 +89,3 @@ int main() {
 
     return 0;
 }
-
