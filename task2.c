@@ -35,30 +35,6 @@ void InsertionSort(int **arr, int size_x, int size_y)
     }
 }
 
-/*
-void sortByMin(int **arr, int size_x, int size_y) {
-    for (int i = 0; i < rows - 1; i++) {
-        int min_element = arr[i][0];
-        int min_element_row = i;
-
-        // Находим минимальный элемент в текущей строке
-        for (int j = 1; j < cols; j++) {
-            if (arr[i][j] < min_element) {
-                min_element = arr[i][j];
-                min_element_row = i;
-            }
-        }
-
-        // Переставляем текущую строку с минимальным элементом на первую позицию
-        if (min_element_row != i) {
-            int *temp = arr[i];
-            arr[i] = arr[min_element_row];
-            arr[min_element_row] = temp;
-        }
-    }
-}
-*/
-
 bool isNumber(const char* str) {
     int i = 0;
 
