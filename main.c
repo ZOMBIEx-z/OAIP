@@ -10,77 +10,62 @@ char toUp(char c) {
     return c;
 }
 
-void task_1(char** line, int size) {
-    for (int i = 0; i < size; i += 1) {
-        line[i][0] = toUp(line[i][0]);
-    }
-}
+void task_1(char* line) {
+    int size = 0;
 
-void task_2(int n1, int n2, char* s1, char* s2) {
-    char* s = (char*) malloc(sizeof(char) * (n1 + n2));
-
-    for (int i = 0; i < n1; i += 1) {
-        s[i] = s1[i];
+    while (line[size] != '\0') {
+        size++;
     }
 
-    for (int i = n1; i < )
-}
+    line[0] = toUp(line[0]);
 
-int min(int* arr, int size) {
-    if (size == 0) {
-        return -1; // Возвращаем -1, если массив пустой
-    } else {
-        int min_element = arr[0]; // Предполагаем, что первый элемент - минимальный
-        for (int i = 1; i < size; i++) {
-            if (arr[i] < min_element) {
-                min_element = arr[i]; // Если находим элемент меньше текущего минимального, обновляем его
-            }
-        }
-        return min_element;
-    }
-}
-
-void InsertionSort(int **arr, int size_x, int size_y)
-{
-    int* newElement;
-    int location;
-
-    for (int i = 1; i < size_x; i++)
-    {
-        newElement = arr[i];
-        location = i - 1;
-        while(location >= 0 && min(arr[location], size_y) > min(newElement, size_y))
-        {
-            arr[location+1] = arr[location];
-            location = location - 1;
-        }
-        arr[location+1] = newElement;
-    }
-}
-
-/*
-void sortByMin(int **arr, int size_x, int size_y) {
-    for (int i = 0; i < rows - 1; i++) {
-        int min_element = arr[i][0];
-        int min_element_row = i;
-
-        // Находим минимальный элемент в текущей строке
-        for (int j = 1; j < cols; j++) {
-            if (arr[i][j] < min_element) {
-                min_element = arr[i][j];
-                min_element_row = i;
-            }
-        }
-
-        // Переставляем текущую строку с минимальным элементом на первую позицию
-        if (min_element_row != i) {
-            int *temp = arr[i];
-            arr[i] = arr[min_element_row];
-            arr[min_element_row] = temp;
+    for (int i = 0; i < size - 1; i += 1) {
+        if (line[i] == ' ' && line[i + 1] != ' ') {
+            line[i + 1] = toUp(line[i + 1]);
         }
     }
 }
-*/
+
+char* task_2(char* S1, char* S2, int N1, int N2) {
+    int len1 = 0;
+    int len2 = 0;
+    int i, j;
+
+    // Подсчет длины строки S1
+    while (S1[len1] != '\0') {
+        len1++;
+    }
+
+    // Подсчет длины строки S2
+    while (S2[len2] != '\0') {
+        len2++;
+    }
+
+    // Проверка, чтобы N1 и N2 не превышали длины соответствующих строк
+    if (N1 > len1)
+        N1 = len1;
+    if (N2 > len2)
+        N2 = len2;
+
+    // Выделение памяти для новой строки
+    char* result = (char*) malloc(N1 + N2 + 1);
+
+    // Копирование первых N1 символов из строки S1 в новую строку
+    for (i = 0; i < N1; i++) {
+        result[i] = S1[i];
+    }
+
+    // Копирование последних N2 символов из строки S2 в новую строку
+    for (j = 0; j <= N2; j++) {
+        result[N1 + j] = S2[len2 - N2 + j - 1];
+    }
+
+    // Добавление завершающего нулевого символа
+    result[N1 + N2] = '\0';
+
+    return result;
+}
+
 
 bool isNumber(const char* str) {
     int i = 0;
@@ -100,20 +85,6 @@ bool isNumber(const char* str) {
     return true;
 }
 
-int getIntegerFromUseri(int i, int j) {
-    char input[100];
-
-    printf("Enter an integer value of matrix[%d][%d]: ", i, j);
-    scanf("%s", input);
-    while (!isNumber(input)) {
-        printf("Error! Enter an integer value of matrix[%d][%d]: ", i, j);
-        scanf("%s", input);
-
-    }
-
-    return atoi(input);
-}
-
 int getIntegerFromUser() {
     char input[100];
 
@@ -127,55 +98,49 @@ int getIntegerFromUser() {
     return atoi(input);
 }
 
+
+
+
 int main() {
 
-    printf("How do you want to fill array (r-random, other-from keyboard): ");
+    printf("What do you want to do (1: task_1, other: task_2): ");
     char line[100];
     fgets(line, sizeof(line), stdin);
 
-    int size_x = getIntegerFromUser();
-    int size_y = getIntegerFromUser();
+    if (line[0] == '1' && line[1] == '\n' && line[2] == '\0') {
+        printf("Enter the line: ");
+        char s[1000];
 
+        fgets(s, 1000, stdin);
 
-    int** list;
-    do {
-        list = (int**) malloc(sizeof(int*) * size_x);
-    } while (list == NULL);
+        task_1(s);
 
+        printf("Result: %s\n", s);
 
-    for (int i = 0; i < size_x; i += 1) {
-        do {
-            list[i] = (int*) malloc(sizeof(int) * size_y);
-        } while (list[i] == NULL);
-    }
-
-    if (line[0] == 'r') {
-        for (int i = 0; i < size_x; i++) {
-            for (int j = 0; j < size_y; j += 1) {
-                list[i][j] = -10000 + rand() % 20000;
-            }
-        }
     } else {
-        for (int i = 0; i < size_x; i++) {
-            for (int j = 0; j < size_y; j += 1) {
-                list[i][j] = getIntegerFromUseri(i, j);
-            }
-        }
-    }
 
-    InsertionSort(list, size_x, size_y);
+        printf("Enter the line s1: ");
+        char s1[1000];
+        fgets(s1, 1000, stdin);
 
-    for (int i = 0; i < size_x; i += 1) {
-        for (int j = 0; j < size_y; j += 1) {
-            printf("%d ", list[i][j]);
-        }
-        printf("\n");
-    }
+        printf("Enter the line s2: ");
+        char s2[1000];
+        fgets(s2, 1000, stdin);
 
-    for (int i = 0; i < size_x; i += 1) {
-        free(list[i]);
+        printf("Enter the number n1: ");
+        int n1;
+        scanf("%i", &n1);
+
+        printf("Enter the number n2: ");
+        int n2;
+        scanf("%i", &n2);
+
+        char* result = task_2(s1, s2, n1, n2);
+
+        printf("Result: %s\n", result);
+
+        free(result);
     }
-    free(list);
 
     return 0;
 }
