@@ -1,11 +1,40 @@
 #include <stdio.h>
 #include <malloc.h>
 
-int len(char* line) {
+int size_str(char* line) {
     int i;
     for (i = 0; line[i] != '\0'; i += 1);
     return i;
 }
+
+int len(char* line) {
+
+    int max = 0;
+    int tmp = 0;
+
+    for (int i = 0; i < size_str(line); i += 1) {
+        if (line[i] == '_') {
+            if (max < tmp) {
+                max = tmp;
+            }
+            tmp = 0;
+        } else {
+            tmp += 1;
+        }
+
+    }
+
+    if (max < tmp) {
+        max = tmp;
+        tmp = 0;
+    } else {
+        tmp += 1;
+    }
+
+    return max;
+}
+
+
 
 void swap(char** a, char** b) {
     char* temp = *a;
@@ -40,7 +69,7 @@ int main(int argc, char **argv) {
     char** list =  (char**) malloc(sizeof(char*) * size);
 
     for (int i = 1; i < argc; i += 1) {
-        int j = len(argv[i]);
+        int j = size_str(argv[i]);
         list[i - 1] = (char*) malloc(sizeof(char) * j);
         for (int k = 0; k < j; k += 1) {
             list[i - 1][k] = argv[i][k];
@@ -48,22 +77,22 @@ int main(int argc, char **argv) {
     }
 
     for (int i = 0; i < size; i += 1) {
-        for (int j = 0; j < len(list[i]); j += 1){
+        for (int j = 0; j < size_str(list[i]); j += 1){
             printf("%c", list[i][j]);
         }
-        printf(" ");
+        printf("\n");
     }
     printf("\n");
+
 
     qs(list, 0, size-1);
 
     for (int i = 0; i < size; i += 1) {
-        for (int j = 0; j < len(list[i]); j += 1){
+        for (int j = 0; j < size_str(list[i]); j += 1){
             printf("%c", list[i][j]);
         }
-        printf(" ");
+        printf("\n");
     }
-    printf("\n");
 
     for (int i = 0; i < size; i += 1) {
         free(list[i]);
@@ -72,3 +101,4 @@ int main(int argc, char **argv) {
 
     return 0;
 }
+
